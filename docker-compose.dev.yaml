@@ -1,0 +1,50 @@
+---
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.chiselled.full
+    container_name: backend
+    ports:
+      - 8000:8000
+    environment:
+      - OLLAMA_SERVICE_NAME=ollama:11434
+    depends_on:
+      - ollama
+    networks:
+      - backend-frontend
+      - backend-ollama
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.chiselled.full
+    container_name: frontend
+    ports:
+      - 8501:8501
+    environment:
+      - BACKEND_SERVICE_NAME=backend:8000
+    depends_on:
+      - backend
+    networks:
+      - backend-frontend
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      # the port 11434 might already be in use on your laptop, change it for 11435
+      - 11435:11434
+    volumes:
+      - ./ollama/ollama:/root/.ollama
+      - ./ollama/entrypoint.sh:/entrypoint.sh
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+    networks:
+      - backend-ollama
+
+networks:
+  backend-ollama:
+  backend-frontend:
