@@ -14,7 +14,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build the Docker image
-        run: docker build -f Dockerfile.basic -t ghcr.io/toino8/junia-automatic-deployment-frontend:${{ github.sha }} .
+
+        run: cd junia-automatic-deployment-frontend |
+             docker build -f Dockerfile.basic -t ghcr.io/toino8/junia-automatic-deployment-frontend:${{ github.sha }} .
 
       - name: Install and run Container Structure Tests
         run: |
