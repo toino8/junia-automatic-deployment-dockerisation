@@ -15,8 +15,9 @@ jobs:
 
       - name: Build the Docker image
 
-        run: cd junia-automatic-deployment-frontend |
-             docker build -f Dockerfile.basic -t ghcr.io/junia-automatic-deployment-frontend:${{ github.sha }} .
+        run: |
+            cd junia-automatic-deployment-frontend
+            docker build -f Dockerfile.basic -t ghcr.io/toino8/junia-automatic-deployment-frontend:${{ github.sha }} .
 
       - name: Install and run Container Structure Tests
         run: |
@@ -25,10 +26,10 @@ jobs:
           mkdir -p $HOME/bin
           mv container-structure-test-linux-amd64 $HOME/bin/containerstructure-test
           echo "$HOME/bin" >> $GITHUB_PATH
-          containerstructure-test test --image ghcr.io/junia-automatic-deployment-frontend:${{ github.sha }} --config tests/cst-basic.yaml
+          containerstructure-test test --image ghcr.io/toino8/junia-automatic-deployment-frontend:${{ github.sha }} --config tests/cst-basic.yaml
 
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u USERNAME --password-stdin
 
       - name: Push the Docker image
-        run: docker push ghcr.io/junia-automatic-deployment-frontend:${{ github.sha }}
+        run: docker push ghcr.io/toino8/junia-automatic-deployment-frontend:${{ github.sha }}
