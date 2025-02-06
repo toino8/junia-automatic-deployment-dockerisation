@@ -21,6 +21,7 @@ jobs:
 
       - name: Install and run Container Structure Tests
         run: |
+          cd junia-automatic-deployment-frontend
           curl -LO https://github.com/GoogleContainerTools/container-structure-test/releases/latest/download/container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           mkdir -p $HOME/bin
