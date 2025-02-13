@@ -1,7 +1,7 @@
 FROM python:3.12-slim
 
 # Installer 'uv' directement depuis l'image officielle sans multi-stage
-COPY --from=ghcr.io/astral-sh/uv:latest /usr/local/bin/uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:latest /usr/local/bin/uv /local/bin/uv
 
 COPY main.py /main.py
 COPY config ./config
