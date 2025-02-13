@@ -1,16 +1,18 @@
 ---
 schemaVersion: 2.0.0
 
+
 fileExistenceTests:
-    - name: main
-      path: /main.py
-      shouldExist: true
+    - name : main
+      path : /main.py
+      shouldExists : true
+
 
 commandTests:
-    - name: python version
-      command: python
-      args: [--version]
-      expectedOutput: [Python 3.12.*]
+    - name : python version
+      command : python
+      args : [--version]
+      expectedOutput : [Python 3.12.*]
 
 metadataTest:
     exposedPorts: ["8501"]

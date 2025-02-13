@@ -1,0 +1,19 @@
+FROM python:3.10-slim
+
+# Installer 'uv' directement depuis l'image officielle sans multi-stage
+COPY --from=ghcr.io/astral-sh/uv:latest /usr/local/bin/uv /usr/local/bin/uv
+
+
+COPY config ./config
+COPY routes ./routes
+COPY pyproject.toml .
+COPY uv.lock .
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-editable
+
+EXPOSE 8000
+
+CMD [ "uv", "run", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" ]
