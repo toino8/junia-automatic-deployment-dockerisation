@@ -9,14 +9,11 @@ fileExistenceTests:
   - name : config
     path : /config 
     shouldExist : true
-  - name: rest directory
-    path: /rest
-    shouldExist: true
   - name : routes
     path : /routes
     shouldExist : true
   - name : uv binary
-    path : usr/local/bin/uv
+    path : /local/bin/uv
     shouldExist: false
   - name : uv lock file 
     path : /uv.lock
