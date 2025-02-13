@@ -1,16 +1,16 @@
 fileExistenceTests:
   - name : main
     path : /main.py
-    shouldExists : true
+    shouldExist : true
   - name : config
     path : /config 
-    shouldExists : true
+    shouldExist : true
   - name: rest directory
     path: /rest
     shouldExist: true
   - name : routes
     path : /routes
-    shouldExists : true
+    shouldExist : true
   - name : uv binary
     path : usr/local/bin/uv
     shouldExist: false
