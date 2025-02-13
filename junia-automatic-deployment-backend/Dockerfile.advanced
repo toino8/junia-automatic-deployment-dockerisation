@@ -34,23 +34,17 @@ COPY routes ./routes
 ENV PATH="/.venv/bin:$PATH"
 ENV PYTHONPATH="/.venv/lib/python3.12/site-packages"
 
-# Créer un utilisateur non-root
-ARG USERNAME=nonroot
-ARG USER_UID=65532
-ARG USER_GID=$USER_UID
 
-# Créer l'utilisateur non-root et changer les permissions des fichiers
-RUN groupadd --gid $USER_GID $USERNAME && \
-    useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
-
-# Changer les permissions des fichiers copiés
-RUN chown -R $USER_UID:$USER_GID /main.py /config /routes /uv.lock /pyproject.toml
-
-# Passer à l'utilisateur non-root
-USER $USERNAME
-# Exposer le port 8501
 EXPOSE 8501
 
 # Commande par défaut pour lancer l'application
 CMD [ "uv", "run", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" ]
 
+ARG USERNAME=nonroot
+
+ARG USER_UID=65532
+
+ARG USER_GID=$USER_UID
+
+RUN groupadd --gid $USER_GID $USERNAME \
+ && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME

@@ -34,17 +34,6 @@ commandTests:
       command: which
       args: [python]
       expectedOutput: [/.venv/bin/python*]
-    - name: whoami
-      command: whoami
-      expectedOutput: [nonroot]
-    - name: check user id
-      command: id
-      args: [-u]
-      expectedOutput: [65532]
-    - name: check group id
-      command: id
-      args: [-g]
-      expectedOutput: [65532]
 
 metadataTest:
     exposedPorts: ["8501"]
