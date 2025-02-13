@@ -1,10 +1,10 @@
-# Étape 1 : Construction de l'image uv_image
+# Étape 1 : Utiliser l'image qui contient 'uv' (astral-sh/uv) pour récupérer l'exécutable 'uv'
 FROM ghcr.io/astral-sh/uv:latest as uv_image
 
-# Étape 2 : Construire l'image finale en partant de python:3.12-slim
-FROM python:3.12-slim
+# Étape 2 : Créer un environnement virtuel dans l'image de base Python
+FROM python:3.12-slim as builder
 
-# Copier l'exécutable 'uv' depuis l'étape précédente
+# Copier l'exécutable 'uv' depuis l'image intermédiaire (uv_image)
 COPY --from=uv_image /usr/local/bin/uv /usr/local/bin/uv
 
 # Copier les fichiers de l'application
@@ -14,11 +14,28 @@ COPY routes ./routes
 COPY pyproject.toml .
 COPY uv.lock .
 
-# Utiliser les montées de volumes (caches, etc.) pour exécuter `uv sync`
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project --no-editable
+# Créer un environnement virtuel et installer les dépendances
+RUN python -m venv /venv \
+    && /venv/bin/pip install --upgrade pip \
+    && /venv/bin/pip install -r requirements.txt \
+    && /venv/bin/uv sync --frozen --no-install-project --no-editable
+
+# Étape 3 : Construire l'image finale
+FROM python:3.12-slim
+
+# Copier l'environnement virtuel et l'exécutable 'uv' depuis l'étape précédente
+COPY --from=builder /venv /venv
+COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
+
+# Copier les fichiers restants de l'application
+COPY main.py /main.py
+COPY config ./config
+COPY routes ./routes
+COPY pyproject.toml .
+COPY uv.lock .
+
+# Utiliser l'environnement virtuel pour l'application
+ENV PATH="/venv/bin:$PATH"
 
 # Exposer le port 8501
 EXPOSE 8501
