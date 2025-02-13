@@ -45,5 +45,10 @@ ARG USERNAME=nonroot
 ARG USER_UID=65532
 ARG USER_GID=$USER_UID
 
+# Créer l'utilisateur avec UID et GID
 RUN groupadd --gid $USER_GID $USERNAME \
- && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+ && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+ && chown -R $USER_UID:$USER_GID /main.py /config /routes /uv.lock /pyproject.toml
+
+# Passer à l'utilisateur non-root
+USER $USERNAME
