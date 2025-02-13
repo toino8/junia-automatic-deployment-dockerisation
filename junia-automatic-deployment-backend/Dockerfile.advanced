@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 FROM python:3.12-slim
 
 # Copier l'environnement virtuel et l'exécutable 'uv' depuis l'étape précédente
-COPY --from=builder /venv /venv
+COPY --from=builder /.venv /.venv
 COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
 
 # Copier les fichiers restants de l'application
