@@ -54,3 +54,4 @@ metadataTest:
         isRegex: true
       - key: PYTHONPATH
         value: "/.venv/lib/python3.12/site-packages"
+        

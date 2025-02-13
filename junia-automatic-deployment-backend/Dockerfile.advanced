@@ -31,11 +31,8 @@ COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
 COPY main.py /main.py
 COPY config ./config
 COPY routes ./routes
-COPY pyproject.toml .
-COPY uv.lock .
 
-# Utiliser l'environnement virtuel pour l'application
-ENV PATH="/venv/bin:$PATH"
+ENV PATH="/.venv/bin:$PATH"
 
 # Exposer le port 8501
 EXPOSE 8501
