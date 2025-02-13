@@ -5,7 +5,7 @@ FROM ghcr.io/astral-sh/uv:latest as uv_image
 FROM python:3.12-slim as builder
 
 # Copier l'exécutable 'uv' depuis l'image intermédiaire (uv_image)
-COPY --from=uv_image /usr/local/bin/uv /usr/local/bin/uv
+COPY --from=uv_image /uv /usr/local/bin/uv
 
 # Copier les fichiers de l'application
 COPY main.py /main.py
