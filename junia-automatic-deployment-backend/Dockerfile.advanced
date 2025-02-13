@@ -25,7 +25,6 @@ FROM python:3.12-slim
 
 # Copier l'environnement virtuel et l'exécutable 'uv' depuis l'étape précédente
 COPY --from=builder /.venv /.venv
-COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
 
 # Copier les fichiers restants de l'application
 COPY main.py /main.py
@@ -33,6 +32,7 @@ COPY config ./config
 COPY routes ./routes
 
 ENV PATH="/.venv/bin:$PATH"
+ENV PYTHONPATH="/.venv/lib/python3.12/site-packages"
 
 # Exposer le port 8501
 EXPOSE 8501
