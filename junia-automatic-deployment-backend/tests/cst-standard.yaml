@@ -13,8 +13,8 @@ fileExistenceTests:
     path : /routes
     shouldExist : true
   - name : uv binary
-    path : /local/bin/uv
-    shouldExist: false
+    path : usr/local/bin/uv
+    shouldExist: true
   - name : uv lock file 
     path : /uv.lock
     shouldExist: false
